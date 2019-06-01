@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+// import {productReducer} from "./redux/reducers/product";
+// import {userReducer} from "./redux/reducers/user";
+import {connect} from "react-redux";
+import {updateUser} from './redux/actions'
 
-function App() {
+
+function App(props) {
+  console.log(props)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>{props.users.user}</p>
+      <button onClick={()=>props.updateUser('Edward New')}>action displatch</button>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  // props: state
+
+  products: state.productReducer,
+  users: state.userReducer
+})
+
+// 액션을 디스패치하는  callback function 을  props 로 매핑
+const mapActionToProps = (dispatch) =>({
+  updateUser: (name)=> dispatch(updateUser(name))
+})
+
+export default connect(mapStateToProps, mapActionToProps)(App);
